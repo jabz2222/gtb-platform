@@ -1,0 +1,126 @@
+@import "tailwindcss";
+
+:root {
+  /* GTB Brand Colors */
+  --gtb-black:   #0A0A0A;
+  --gtb-gold:    #C9A84C;
+  --gtb-white:   #FFFFFF;
+  --gtb-silver:  #CCCCCC;
+
+  /* Division Colors */
+  --gtb-football:        #5BB8E8;
+  --gtb-fitness:         #2E8B35;
+  --gtb-sports:          #E8641A;
+  --gtb-mentoring-one:   #9B2454;
+  --gtb-mentoring-two:   #2E9B8A;
+  --gtb-education:       #CC2222;
+
+  /* Semantic */
+  --background:  var(--gtb-black);
+  --foreground:  var(--gtb-white);
+  --accent:      var(--gtb-gold);
+  --muted:       #1A1A1A;
+  --muted-fg:    var(--gtb-silver);
+  --border:      #2A2A2A;
+  --card:        #111111;
+  --input:       #1A1A1A;
+  --ring:        var(--gtb-gold);
+  --radius:      0.5rem;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+}
+
+body {
+  background: var(--gtb-black);
+  color: var(--gtb-white);
+  font-family: 'Montserrat', 'Calibri', Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Arial Black', 'Bebas Neue', Arial, sans-serif;
+  letter-spacing: 0.04em;
+}
+
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: var(--gtb-black); }
+::-webkit-scrollbar-thumb { background: #333; border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--gtb-gold); }
+
+.text-gold-gradient {
+  background: linear-gradient(135deg, #C9A84C 0%, #F0D080 50%, #C9A84C 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+*:focus-visible {
+  outline: 2px solid var(--gtb-gold);
+  outline-offset: 2px;
+}
+
+/* ─── Micro-interactions ─────────────────────────────── */
+
+/* Gold shimmer on CTA buttons */
+@keyframes shimmer {
+  0%   { background-position: -200% center; }
+  100% { background-position:  200% center; }
+}
+
+.btn-shimmer {
+  position: relative;
+  overflow: hidden;
+}
+.btn-shimmer::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    105deg,
+    transparent 40%,
+    rgba(255, 255, 255, 0.25) 50%,
+    transparent 60%
+  );
+  background-size: 200% 100%;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+.btn-shimmer:hover::after {
+  opacity: 1;
+  animation: shimmer 0.6s ease forwards;
+}
+
+/* Card glow on hover — use alongside data-glow-color inline style */
+.card-hover-glow {
+  transition: box-shadow 0.3s ease, border-color 0.3s ease;
+}
+.card-hover-glow:hover {
+  box-shadow: 0 0 20px rgba(201, 168, 76, 0.12), 0 0 40px rgba(201, 168, 76, 0.06);
+}
+
+/* Division card border trace — parent needs position:relative overflow:hidden */
+.card-border-trace::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(135deg, var(--trace-color, #C9A84C) 0%, transparent 60%);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+.card-border-trace:hover::before {
+  opacity: 1;
+}
+
+/* No scrollbar utility */
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
