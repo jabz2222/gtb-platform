@@ -64,7 +64,7 @@ export default function SignInRoleModal({ trigger, className }: Props) {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.15 }}
-            className="fixed inset-0 z-[60] bg-black/70 backdrop-blur-sm overflow-y-auto"
+            className="fixed inset-0 z-[60] bg-black/70 backdrop-blur-sm flex items-start justify-center p-4 pt-32"
             onClick={() => setOpen(false)}
           >
             <motion.div
@@ -73,7 +73,7 @@ export default function SignInRoleModal({ trigger, className }: Props) {
               exit={{ opacity: 0, scale: 0.96, y: 8 }}
               transition={{ duration: 0.18 }}
               onClick={e => e.stopPropagation()}
-              className="bg-[#0D0D0D] border border-white/[0.08] rounded-sm w-[calc(100%-2rem)] max-w-md mx-auto my-24 overflow-hidden shadow-2xl"
+              className="bg-[#0D0D0D] border border-white/[0.08] rounded-sm w-full max-w-md overflow-hidden shadow-2xl"
             >
               <div className="px-6 py-5 border-b border-white/[0.06] flex items-center justify-between">
                 <div>
