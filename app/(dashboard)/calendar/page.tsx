@@ -32,7 +32,7 @@ export default async function CalendarPage() {
   const firstDay = new Date(year, month, 1).toISOString()
   const lastDay = new Date(year, month + 1, 0, 23, 59, 59).toISOString()
 
-  const [bookingsRes, divisionsRes, availableRes] = await Promise.all([
+  const [bookingsRes, divisionsRes, availableRes, externalRes] = await Promise.all([
     supabase
       .from('bookings')
       .select('id, starts_at, ends_at, booking_type, status, divisions(slug, name)')
@@ -54,6 +54,14 @@ export default async function CalendarPage() {
       .gte('starts_at', new Date().toISOString())
       .order('starts_at', { ascending: true })
       .limit(50),
+    // Fetch external (user-added) events for this month
+    supabase
+      .from('external_events')
+      .select('id, title, event_type, starts_at, ends_at, location, notes, color_hex')
+      .eq('user_id', user.id)
+      .gte('starts_at', firstDay)
+      .lte('starts_at', lastDay)
+      .order('starts_at', { ascending: true }),
   ])
 
   // Build dynamic division legend — only show divisions the player is in
@@ -77,6 +85,7 @@ export default async function CalendarPage() {
     <CalendarView
       bookings={(bookingsRes.data ?? []) as Record<string, unknown>[]}
       availableSlots={(availableRes.data ?? []) as Record<string, unknown>[]}
+      externalEvents={externalRes.data ?? []}
       divisionKey={divisionKey}
       inPersonColour={IN_PERSON_COLOUR}
       monthName={monthName}

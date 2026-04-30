@@ -57,7 +57,7 @@ export default async function MenteeDetailPage({ params }: Props) {
     .from('profiles')
     .select(`
       id, full_name, email, role, date_of_birth, position, academy_year,
-      about_me, my_purpose, age_phase, parent_guardian_id,
+      about_me, my_purpose, age_phase, parent_guardian_id, coach_activated_sections,
       parent:profiles!profiles_parent_guardian_id_fkey(id, full_name, email)
     `)
     .eq('id', clientId)
@@ -258,6 +258,7 @@ export default async function MenteeDetailPage({ params }: Props) {
               notes: p.notes,
               division: Array.isArray(p.division) ? p.division[0] : p.division,
             }))}
+            activatedSections={(player as { coach_activated_sections?: string[] }).coach_activated_sections ?? []}
           />
         </div>
       </div>

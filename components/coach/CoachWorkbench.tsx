@@ -24,17 +24,19 @@ interface Props {
   playerName: string
   divisions: Division[]
   recentPerformance: PerformanceRow[]
+  activatedSections?: string[]
 }
 
-export default function CoachWorkbench({ playerId, playerName, divisions, recentPerformance }: Props) {
+export default function CoachWorkbench({ playerId, playerName, divisions, recentPerformance, activatedSections }: Props) {
   const router = useRouter()
-  const [tab, setTab] = useState<'stats' | 'note'>('stats')
+  const [tab, setTab] = useState<'stats' | 'note' | 'sections'>('stats')
 
   return (
     <div className="bg-[#0D0D0D] border border-white/5 rounded-sm overflow-hidden">
       <div className="border-b border-white/5 flex">
         <TabBtn active={tab === 'stats'} onClick={() => setTab('stats')} label="PlayerData (manual)" />
         <TabBtn active={tab === 'note'} onClick={() => setTab('note')} label="Session Note" />
+        <TabBtn active={tab === 'sections'} onClick={() => setTab('sections')} label="PDP Sections" />
       </div>
 
       {tab === 'stats' && (
@@ -49,6 +51,118 @@ export default function CoachWorkbench({ playerId, playerName, divisions, recent
       {tab === 'note' && (
         <SessionNoteForm playerId={playerId} playerName={playerName} onSaved={() => router.refresh()} />
       )}
+
+      {tab === 'sections' && (
+        <SectionActivator
+          playerId={playerId}
+          activated={activatedSections ?? []}
+          onSaved={() => router.refresh()}
+        />
+      )}
+    </div>
+  )
+}
+
+function SectionActivator({
+  playerId,
+  activated,
+  onSaved,
+}: { playerId: string; activated: string[]; onSaved: () => void }) {
+  const SECTIONS = [
+    { slug: 'sc',                label: 'S&C Training' },
+    { slug: 'mentorship',        label: 'Mentorship & Review' },
+    { slug: 'kpis',              label: 'Habits & Consistency' },
+    { slug: 'performance',       label: 'Training Reflection' },
+    { slug: 'match',             label: 'Match Reflection' },
+    { slug: 'technical',         label: 'Technical Tracker' },
+    { slug: 'game-intelligence', label: 'Game Intelligence' },
+    { slug: 'feedback',          label: 'Feedback & Review' },
+  ] as const
+
+  const [selected, setSelected] = useState<Set<string>>(new Set(activated))
+  const [busy, setBusy] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+  const [saved, setSaved] = useState(false)
+
+  function toggle(slug: string) {
+    setSelected(prev => {
+      const next = new Set(prev)
+      if (next.has(slug)) next.delete(slug)
+      else next.add(slug)
+      return next
+    })
+  }
+
+  async function submit() {
+    setError(null)
+    setBusy(true)
+    try {
+      const res = await fetch(`/api/admin/users/${playerId}/sections`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ sections: Array.from(selected) }),
+      })
+      const json = await res.json().catch(() => ({}))
+      if (!res.ok) {
+        setError(json.error ?? `Save failed (${res.status})`)
+        return
+      }
+      setSaved(true)
+      setTimeout(() => setSaved(false), 3000)
+      onSaved()
+    } catch (e) {
+      setError(e instanceof Error ? e.message : 'Network error')
+    } finally {
+      setBusy(false)
+    }
+  }
+
+  return (
+    <div className="p-5 space-y-4">
+      <p className="text-[11px] text-[#888]">
+        Activate optional PDP sections for this player. Sections are visible but greyed-out for the player until activated.
+      </p>
+      {error && (
+        <div className="bg-red-900/30 border border-red-700 text-red-300 text-xs px-3 py-2 rounded-sm">{error}</div>
+      )}
+      {saved && (
+        <div className="bg-[#2E8B35]/15 border border-[#2E8B35]/30 text-[#2E8B35] text-xs px-3 py-2 rounded-sm">
+          Sections updated.
+        </div>
+      )}
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+        {SECTIONS.map(s => {
+          const isActive = selected.has(s.slug)
+          return (
+            <label
+              key={s.slug}
+              className={
+                'flex items-center gap-2.5 px-3 py-2 rounded-sm border cursor-pointer transition-colors ' +
+                (isActive
+                  ? 'border-[#2E8B35]/40 bg-[#2E8B35]/5'
+                  : 'border-white/[0.08] hover:border-white/[0.15]')
+              }
+            >
+              <input
+                type="checkbox"
+                checked={isActive}
+                onChange={() => toggle(s.slug)}
+                className="w-3.5 h-3.5 accent-[#2E8B35]"
+              />
+              <span className="text-xs text-white">{s.label}</span>
+            </label>
+          )
+        })}
+      </div>
+      <button
+        type="button"
+        onClick={submit}
+        disabled={busy}
+        className="w-full bg-[#C9A84C] hover:bg-[#d4b055] disabled:opacity-40 text-black font-black py-2.5 px-4 rounded-sm text-xs tracking-[0.15em] uppercase transition-colors"
+        style={{ fontFamily: "'Arial Black', sans-serif" }}
+      >
+        {busy ? 'Saving…' : 'Save Activated Sections'}
+      </button>
     </div>
   )
 }

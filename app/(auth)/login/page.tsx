@@ -7,6 +7,11 @@ export const metadata: Metadata = {
 }
 
 const ROLE_COPY = {
+  'parents-players': {
+    eyebrow: 'Parents / Players Portal',
+    accent: '#C9A84C',
+    subtitle: 'Sign in to your GTB account \u2014 we\u2019ll route you to the right place',
+  },
   player: {
     eyebrow: 'Player Portal',
     accent: '#5BB8E8',
@@ -33,7 +38,9 @@ interface PageProps {
 export default async function LoginPage({ searchParams }: PageProps) {
   const sp = await searchParams
   const roleKey: RoleKey | null =
-    sp.role === 'player' || sp.role === 'parent' || sp.role === 'coach' ? sp.role : null
+    sp.role === 'parents-players' || sp.role === 'player' || sp.role === 'parent' || sp.role === 'coach'
+      ? sp.role
+      : null
   const copy = roleKey ? ROLE_COPY[roleKey] : null
 
   return (

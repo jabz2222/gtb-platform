@@ -2,12 +2,35 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
+import ExternalEventForm from './ExternalEventForm'
 
 const WEEKDAYS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+
+const EXTERNAL_EVENT_COLOURS: Record<string, string> = {
+  training:      '#5BB8E8',
+  gym:           '#2E8B35',
+  match:         '#E8641A',
+  team_training: '#9B2454',
+  recovery:      '#2E9B8A',
+  school:        '#888',
+  other:         '#666',
+}
+
+interface ExternalEvent {
+  id: string
+  title: string
+  event_type: string
+  starts_at: string
+  ends_at: string | null
+  location: string | null
+  notes: string | null
+  color_hex: string | null
+}
 
 interface Props {
   bookings: Record<string, unknown>[]
   availableSlots: Record<string, unknown>[]
+  externalEvents: ExternalEvent[]
   divisionKey: Record<string, string>
   inPersonColour: string
   monthName: string
@@ -29,6 +52,7 @@ function isInPerson(bookingType: string): boolean {
 export default function CalendarView({
   bookings,
   availableSlots,
+  externalEvents,
   divisionKey,
   inPersonColour,
   monthName,
@@ -40,7 +64,9 @@ export default function CalendarView({
 }: Props) {
   const [view, setView] = useState<'calendar' | 'booking'>('calendar')
   const [selectedEvent, setSelectedEvent] = useState<Record<string, unknown> | null>(null)
+  const [selectedExternal, setSelectedExternal] = useState<ExternalEvent | null>(null)
   const [filterType, setFilterType] = useState('all')
+  const [addEventOpen, setAddEventOpen] = useState(false)
 
   // Group bookings by day
   const bookingsByDay: Record<number, Record<string, unknown>[]> = {}
@@ -48,6 +74,17 @@ export default function CalendarView({
     const day = new Date(b.starts_at as string).getDate()
     if (!bookingsByDay[day]) bookingsByDay[day] = []
     bookingsByDay[day].push(b)
+  }
+
+  // Group external events by day (only ones in this rendered month)
+  const externalByDay: Record<number, ExternalEvent[]> = {}
+  for (const ev of externalEvents) {
+    const d = new Date(ev.starts_at)
+    if (d.getFullYear() === year && d.getMonth() === month) {
+      const day = d.getDate()
+      if (!externalByDay[day]) externalByDay[day] = []
+      externalByDay[day].push(ev)
+    }
   }
 
   // Filter available slots by service type
@@ -82,26 +119,37 @@ export default function CalendarView({
           </p>
         </div>
 
-        {/* Toggle */}
-        <div className="flex gap-1 bg-[#0D0D0D] border border-white/5 rounded-sm p-1 mt-1">
-          <button
-            onClick={() => setView('calendar')}
-            className={`px-4 py-2 text-xs tracking-wider uppercase rounded-sm transition-colors ${
-              view === 'calendar' ? 'bg-[#C9A84C] text-black font-black' : 'text-[#555] hover:text-white'
-            }`}
-            style={view === 'calendar' ? { fontFamily: "'Arial Black', sans-serif" } : undefined}
-          >
-            Calendar
-          </button>
-          <button
-            onClick={() => setView('booking')}
-            className={`px-4 py-2 text-xs tracking-wider uppercase rounded-sm transition-colors ${
-              view === 'booking' ? 'bg-[#C9A84C] text-black font-black' : 'text-[#555] hover:text-white'
-            }`}
-            style={view === 'booking' ? { fontFamily: "'Arial Black', sans-serif" } : undefined}
-          >
-            Book Session
-          </button>
+        {/* Toggle + Add event */}
+        <div className="flex items-center gap-2 mt-1">
+          {view === 'calendar' && (
+            <button
+              onClick={() => setAddEventOpen(true)}
+              className="px-3 py-2 text-xs tracking-wider uppercase rounded-sm border border-white/10
+                         text-[#C9A84C] hover:bg-[#C9A84C]/10 transition-colors"
+            >
+              + Add event
+            </button>
+          )}
+          <div className="flex gap-1 bg-[#0D0D0D] border border-white/5 rounded-sm p-1">
+            <button
+              onClick={() => setView('calendar')}
+              className={`px-4 py-2 text-xs tracking-wider uppercase rounded-sm transition-colors ${
+                view === 'calendar' ? 'bg-[#C9A84C] text-black font-black' : 'text-[#555] hover:text-white'
+              }`}
+              style={view === 'calendar' ? { fontFamily: "'Arial Black', sans-serif" } : undefined}
+            >
+              Calendar
+            </button>
+            <button
+              onClick={() => setView('booking')}
+              className={`px-4 py-2 text-xs tracking-wider uppercase rounded-sm transition-colors ${
+                view === 'booking' ? 'bg-[#C9A84C] text-black font-black' : 'text-[#555] hover:text-white'
+              }`}
+              style={view === 'booking' ? { fontFamily: "'Arial Black', sans-serif" } : undefined}
+            >
+              Book Session
+            </button>
+          </div>
         </div>
       </div>
 
@@ -126,6 +174,8 @@ export default function CalendarView({
                 const day = i + 1
                 const isToday = day === today
                 const dayBookings = bookingsByDay[day] ?? []
+                const dayExternal = externalByDay[day] ?? []
+                const totalEvents = dayBookings.length + dayExternal.length
 
                 return (
                   <div
@@ -158,8 +208,23 @@ export default function CalendarView({
                         </button>
                       )
                     })}
-                    {dayBookings.length > 2 && (
-                      <div className="text-[9px] text-[#444] px-1">+{dayBookings.length - 2}</div>
+                    {dayExternal.slice(0, Math.max(0, 2 - dayBookings.length)).map(ev => {
+                      const colour = ev.color_hex || EXTERNAL_EVENT_COLOURS[ev.event_type] || '#666'
+                      return (
+                        <button
+                          key={ev.id}
+                          onClick={() => setSelectedExternal(ev)}
+                          className="w-full text-left text-[9px] px-1 py-0.5 rounded-sm mb-0.5 truncate transition-opacity hover:opacity-80
+                                     border border-dashed"
+                          style={{ borderColor: `${colour}55`, color: colour }}
+                          title={ev.title}
+                        >
+                          {formatTime(ev.starts_at)} · {ev.title}
+                        </button>
+                      )
+                    })}
+                    {totalEvents > 2 && (
+                      <div className="text-[9px] text-[#444] px-1">+{totalEvents - 2}</div>
                     )}
                   </div>
                 )
@@ -332,6 +397,66 @@ export default function CalendarView({
             </button>
           </div>
         </div>
+      )}
+
+      {/* ===== EXTERNAL EVENT DETAIL MODAL ===== */}
+      {selectedExternal && (
+        <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4" onClick={() => setSelectedExternal(null)}>
+          <div className="bg-[#0D0D0D] border border-white/10 rounded-sm p-6 max-w-md w-full" onClick={e => e.stopPropagation()}>
+            <div className="flex items-center justify-between mb-4">
+              <div
+                className="w-2 h-2 rounded-full"
+                style={{ backgroundColor: selectedExternal.color_hex || EXTERNAL_EVENT_COLOURS[selectedExternal.event_type] || '#666' }}
+              />
+              <button onClick={() => setSelectedExternal(null)} className="text-[#444] hover:text-white transition-colors text-xl leading-none">×</button>
+            </div>
+            <p
+              className="text-[11px] uppercase tracking-wider mb-1"
+              style={{ color: selectedExternal.color_hex || EXTERNAL_EVENT_COLOURS[selectedExternal.event_type] || '#666' }}
+            >
+              {selectedExternal.event_type.replace(/_/g, ' ')}
+            </p>
+            <p className="text-lg font-medium text-white mb-1">{selectedExternal.title}</p>
+            <p className="text-sm text-[#555] mb-3">
+              {new Date(selectedExternal.starts_at).toLocaleDateString('en-GB', {
+                weekday: 'long', day: 'numeric', month: 'long',
+              })} · {formatTime(selectedExternal.starts_at)}
+              {selectedExternal.ends_at && <> – {formatTime(selectedExternal.ends_at)}</>}
+            </p>
+            {selectedExternal.location && (
+              <p className="text-xs text-[#888] mb-2">📍 {selectedExternal.location}</p>
+            )}
+            {selectedExternal.notes && (
+              <div className="bg-[#111] border border-white/5 rounded-sm p-3 mb-3">
+                <p className="text-xs text-[#aaa] whitespace-pre-wrap">{selectedExternal.notes}</p>
+              </div>
+            )}
+            <button
+              onClick={async () => {
+                if (!confirm('Delete this event?')) return
+                const res = await fetch(`/api/calendar/events/${selectedExternal.id}`, { method: 'DELETE' })
+                if (res.ok) {
+                  setSelectedExternal(null)
+                  window.location.reload()
+                }
+              }}
+              className="w-full py-2 text-[11px] uppercase tracking-wider text-red-400 border border-red-500/20 hover:border-red-500/40 rounded-sm transition-colors"
+            >
+              Delete event
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* ===== ADD EXTERNAL EVENT FORM ===== */}
+      {addEventOpen && (
+        <ExternalEventForm
+          onClose={() => setAddEventOpen(false)}
+          onSaved={() => {
+            setAddEventOpen(false)
+            window.location.reload()
+          }}
+        />
       )}
     </div>
   )

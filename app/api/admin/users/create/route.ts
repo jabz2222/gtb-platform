@@ -2,7 +2,8 @@ import { NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { adminClient } from '@/lib/supabase/admin'
 
-const ALLOWED_ROLES = ['admin', 'staff', 'mentor', 'educator'] as const
+// Admin can create any role from the panel. Self-signup remains player+parent only.
+const ALLOWED_ROLES = ['admin', 'staff', 'mentor', 'educator', 'client', 'minor', 'parent'] as const
 type AllowedRole = (typeof ALLOWED_ROLES)[number]
 
 interface CreateUserBody {
@@ -70,20 +71,35 @@ export async function POST(request: Request) {
 
   const userId = created.user.id
 
-  // Optional: assign division memberships via the existing staff_divisions table.
+  // Optional: assign division memberships.
+  // Coach roles → staff_divisions ; Player/Parent roles → user_divisions.
+  const isCoachRole = role === 'admin' || role === 'staff' || role === 'mentor' || role === 'educator'
   if (division_ids?.length) {
-    const rows = division_ids.map((division_id, i) => ({
-      staff_id: userId,
-      division_id,
-      is_primary: i === 0,
-    }))
-    const { error: divErr } = await adminClient.from('staff_divisions').insert(rows)
-    if (divErr) {
-      // User exists but division assignment failed — surface but don't roll back.
-      return NextResponse.json(
-        { id: userId, warning: `User created, but division assignment failed: ${divErr.message}` },
-        { status: 201 }
-      )
+    if (isCoachRole) {
+      const rows = division_ids.map((division_id, i) => ({
+        staff_id: userId,
+        division_id,
+        is_primary: i === 0,
+      }))
+      const { error: divErr } = await adminClient.from('staff_divisions').insert(rows)
+      if (divErr) {
+        return NextResponse.json(
+          { id: userId, warning: `User created, but division assignment failed: ${divErr.message}` },
+          { status: 201 }
+        )
+      }
+    } else {
+      const rows = division_ids.map(division_id => ({
+        user_id: userId,
+        division_id,
+      }))
+      const { error: divErr } = await adminClient.from('user_divisions').insert(rows)
+      if (divErr) {
+        return NextResponse.json(
+          { id: userId, warning: `User created, but division enrolment failed: ${divErr.message}` },
+          { status: 201 }
+        )
+      }
     }
   }
 

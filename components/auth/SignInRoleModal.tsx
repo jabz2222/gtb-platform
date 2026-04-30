@@ -6,17 +6,10 @@ import { motion, AnimatePresence } from 'framer-motion'
 
 const PORTALS = [
   {
-    role: 'player',
-    label: 'Player Login',
-    description: 'GTB Football, Fitness or Sports player',
-    href: '/login?role=player',
-    accent: '#5BB8E8',
-  },
-  {
-    role: 'parent',
-    label: 'Parent Login',
-    description: 'Parent or guardian of an enrolled player',
-    href: '/login?role=parent',
+    role: 'parents-players',
+    label: 'Parents / Players Login',
+    description: 'Players and their parents/guardians',
+    href: '/login?role=parents-players',
     accent: '#C9A84C',
   },
   {

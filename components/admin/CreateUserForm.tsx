@@ -15,10 +15,13 @@ interface CreateUserFormProps {
 }
 
 const ROLES = [
-  { value: 'admin',    label: 'Admin (Director — full access)' },
-  { value: 'staff',    label: 'Staff / Head Coach (division-wide access)' },
+  { value: 'client',   label: 'Player — Adult / U16+ (client)' },
+  { value: 'minor',    label: 'Player — Minor / U16- (minor)' },
+  { value: 'parent',   label: 'Parent / Guardian' },
   { value: 'mentor',   label: 'Coach / Mentor (own assignments only)' },
+  { value: 'staff',    label: 'Staff / Head Coach (division-wide access)' },
   { value: 'educator', label: 'Educator (content delivery only)' },
+  { value: 'admin',    label: 'Admin (Director — full access)' },
 ] as const
 
 export default function CreateUserForm({ divisions }: CreateUserFormProps) {
