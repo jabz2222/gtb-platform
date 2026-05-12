@@ -24,17 +24,31 @@ interface SCBody {
   reflection: string | null
 }
 
+interface WeeklyRow {
+  area: string | null
+  target: string
+  actions?: string | null
+  evidence?: string | null
+  challenges?: string | null
+  learnings?: string | null
+  next_step?: string | null
+  status_colour?: string | null
+}
+
 interface WeeklyBody {
   kind: 'weekly'
   week_start: string
-  area: string | null
-  target: string
-  actions: string | null
-  evidence: string | null
-  challenges: string | null
-  learnings: string | null
-  next_step: string | null
-  status_colour: string | null
+  // Single reflection (legacy)
+  area?: string | null
+  target?: string
+  actions?: string | null
+  evidence?: string | null
+  challenges?: string | null
+  learnings?: string | null
+  next_step?: string | null
+  status_colour?: string | null
+  // Batch insert (new — used by 5-pillar weekly reflection table)
+  rows?: WeeklyRow[]
 }
 
 type Body = SessionBody | SCBody | WeeklyBody
@@ -82,6 +96,30 @@ export async function POST(request: Request) {
   }
 
   if (body.kind === 'weekly') {
+    // Batch path: 5-pillar weekly reflection table from the player portal
+    if (Array.isArray(body.rows) && body.rows.length > 0) {
+      const filtered = body.rows.filter(r => r.target?.trim())
+      if (filtered.length === 0) {
+        return NextResponse.json({ error: 'At least one row needs a target' }, { status: 400 })
+      }
+      const rows = filtered.map(r => ({
+        player_id: user.id,
+        week_start: body.week_start,
+        area: r.area ?? null,
+        target: r.target,
+        actions: r.actions ?? null,
+        evidence: r.evidence ?? null,
+        challenges: r.challenges ?? null,
+        learnings: r.learnings ?? null,
+        next_step: r.next_step ?? null,
+        status_colour: r.status_colour ?? null,
+      }))
+      const { error } = await supabase.from('pdp_reflections').insert(rows)
+      if (error) return NextResponse.json({ error: error.message }, { status: 500 })
+      return NextResponse.json({ ok: true, inserted: rows.length }, { status: 201 })
+    }
+
+    // Single-row path (legacy)
     if (!body.target?.trim()) {
       return NextResponse.json({ error: 'target required' }, { status: 400 })
     }

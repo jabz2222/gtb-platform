@@ -82,7 +82,12 @@ export default async function UserDetailPage({ params }: { params: Promise<{ id:
           </div>
 
           {/* Admin actions */}
-          <AdminUserActions userId={id} currentRole={profile.role ?? 'client'} currentTier={profile.tier_id ?? ''} />
+          <AdminUserActions
+            userId={id}
+            currentRole={profile.role ?? 'client'}
+            currentTier={profile.tier_id ?? ''}
+            currentAgePhase={(profile as { age_phase?: string | null }).age_phase ?? null}
+          />
 
           {/* Role-specific admin links */}
           {(profile.role === 'parent' || profile.role === 'admin' || profile.role === 'staff' || profile.role === 'mentor') && (
