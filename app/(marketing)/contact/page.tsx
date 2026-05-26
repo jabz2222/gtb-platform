@@ -1,6 +1,11 @@
 import { Metadata } from 'next'
 import ContactForm from '@/components/marketing/ContactForm'
 import EnquiryCarousel from '@/components/marketing/EnquiryCarousel'
+import FadeUp from '@/components/ui/motion/FadeUp'
+import StaggerContainer from '@/components/ui/motion/StaggerContainer'
+import SlideIn from '@/components/ui/motion/SlideIn'
+import ScrollReveal3D from '@/components/ui/motion/ScrollReveal3D'
+import TiltCard from '@/components/ui/motion/TiltCard'
 
 export const metadata: Metadata = { title: 'Contact GTB Development' }
 
@@ -39,22 +44,25 @@ export default function ContactPage() {
   return (
     <div className="max-w-5xl mx-auto px-6 py-20">
       {/* Header */}
-      <div className="mb-12">
-        <p className="text-[#C9A84C] text-[11px] tracking-[0.3em] uppercase mb-3">Get in Touch</p>
-        <h1
-          className="text-5xl font-black tracking-tight text-white uppercase mb-4"
-          style={{ fontFamily: "'Arial Black', sans-serif" }}
-        >
-          Contact <span style={{ color: '#C9A84C' }}>GTB</span>
-        </h1>
-        <p className="text-[#555] text-sm max-w-md">
-          Have a question about our programmes? Want to join the ecosystem?
-          We&apos;d love to hear from you.
-        </p>
-      </div>
+      <FadeUp>
+        <div className="mb-12">
+          <p className="text-[#C9A84C] text-[11px] tracking-[0.3em] uppercase mb-3">Get in Touch</p>
+          <h1
+            className="text-5xl font-black tracking-tight text-white uppercase mb-4"
+            style={{ fontFamily: "'Arial Black', sans-serif" }}
+          >
+            Contact <span style={{ color: '#C9A84C' }}>GTB</span>
+          </h1>
+          <p className="text-[#555] text-sm max-w-md">
+            Have a question about our programmes? Want to join the ecosystem?
+            We&apos;d love to hear from you.
+          </p>
+        </div>
+      </FadeUp>
 
       {/* Enquiry Info */}
-      <div className="mb-12 bg-[#0D0D0D] border border-white/5 rounded-sm overflow-hidden">
+      <ScrollReveal3D rotateXFrom={10} yFrom={50}>
+        <div className="mb-12 bg-[#0D0D0D] border border-white/5 rounded-sm overflow-hidden">
         <div className="px-6 py-5 border-b border-white/5">
           <span className="text-[11px] tracking-[0.3em] uppercase text-[#C9A84C]">
             Before You Enquire
@@ -105,9 +113,11 @@ export default function ContactPage() {
             </p>
           </div>
         </div>
-      </div>
+        </div>
+      </ScrollReveal3D>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <FadeUp>
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Form */}
         <div className="lg:col-span-2 bg-[#0D0D0D] border border-white/5 rounded-sm overflow-hidden">
           <div className="px-6 py-5 border-b border-white/5">
@@ -123,21 +133,22 @@ export default function ContactPage() {
         {/* Info */}
         <div className="space-y-4">
           {INFO_ITEMS.map(item => (
-            <div
-              key={item.label}
-              className="bg-[#0D0D0D] border border-white/5 rounded-sm p-5 flex items-start gap-4"
-            >
-              <div className="w-8 h-8 rounded-sm bg-[#C9A84C]/10 flex items-center justify-center
-                              text-[#C9A84C] flex-shrink-0 mt-0.5">
-                {item.icon}
+            <TiltCard key={item.label} maxTilt={5} shine>
+              <div
+                className="bg-[#0D0D0D] border border-white/5 rounded-sm p-5 flex items-start gap-4"
+              >
+                <div className="w-8 h-8 rounded-sm bg-[#C9A84C]/10 flex items-center justify-center
+                                text-[#C9A84C] flex-shrink-0 mt-0.5">
+                  {item.icon}
+                </div>
+                <div>
+                  <p className="text-[10px] text-[#444] uppercase tracking-wider mb-0.5">
+                    {item.label}
+                  </p>
+                  <p className="text-sm text-white">{item.value}</p>
+                </div>
               </div>
-              <div>
-                <p className="text-[10px] text-[#444] uppercase tracking-wider mb-0.5">
-                  {item.label}
-                </p>
-                <p className="text-sm text-white">{item.value}</p>
-              </div>
-            </div>
+            </TiltCard>
           ))}
 
           {/* Divisions quick links */}
@@ -169,7 +180,8 @@ export default function ContactPage() {
             </div>
           </div>
         </div>
-      </div>
+        </div>
+      </FadeUp>
     </div>
   )
 }

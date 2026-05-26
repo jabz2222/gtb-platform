@@ -5,6 +5,8 @@ import StaggerContainer from '@/components/ui/motion/StaggerContainer'
 import AnimatedHeading from '@/components/ui/motion/AnimatedHeading'
 import ColourBarReveal from '@/components/ui/motion/ColourBarReveal'
 import CTAButton from '@/components/ui/motion/CTAButton'
+import ScrollReveal3D from '@/components/ui/motion/ScrollReveal3D'
+import TiltCard from '@/components/ui/motion/TiltCard'
 
 export const metadata: Metadata = { title: 'Our Divisions — GTB Development' }
 
@@ -15,7 +17,7 @@ const DIVISIONS = [
     tagline: 'Develop the Player. Build the Person.',
     description: 'Technical, tactical, and game intelligence development through guided discovery coaching across all age groups.',
     color: '#5BB8E8',
-    stat: 'U5–U15+',
+    stat: 'U5–16+',
   },
   {
     slug: 'fitness',
@@ -90,6 +92,7 @@ export default function DivisionsIndexPage() {
         <StaggerContainer className="space-y-4">
           {DIVISIONS.map(d => (
             <FadeUp key={d.slug}>
+              <TiltCard maxTilt={3} shine>
               <Link
                 href={`/divisions/${d.slug}`}
                 className="group relative block bg-[#0D0D0D] border border-white/5 hover:border-white/10 rounded-sm overflow-hidden transition-colors"
@@ -137,6 +140,7 @@ export default function DivisionsIndexPage() {
                   </div>
                 </div>
               </Link>
+              </TiltCard>
             </FadeUp>
           ))}
         </StaggerContainer>

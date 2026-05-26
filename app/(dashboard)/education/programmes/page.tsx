@@ -79,15 +79,15 @@ export default async function ProgrammesPage() {
   return (
     <div>
       <div className="mb-8">
-        <p className="text-[#CC2222] text-[11px] tracking-[0.3em] uppercase mb-2">Education</p>
+        <p className="text-[#CC2222] text-[11px] tracking-[0.3em] uppercase mb-2">GTB Education</p>
         <h1
           className="text-4xl font-black tracking-wider text-white uppercase"
           style={{ fontFamily: "'Arial Black', sans-serif" }}
         >
-          Coach <span style={{ color: '#CC2222' }}>Programmes</span>
+          Education <span style={{ color: '#CC2222' }}>Programmes</span>
         </h1>
         <p className="text-[#444] mt-1.5 text-sm">
-          Structured learning pathways built on GTB&apos;s 4D Model and Five Intelligences framework
+          Structured learning pathways built on the 4D Model — Drive · Decision · Delivery · Durability
         </p>
       </div>
 

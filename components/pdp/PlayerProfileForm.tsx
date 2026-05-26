@@ -11,7 +11,11 @@ const COMMITMENTS = [
   'I will act with respect to coaches, teammates, and opponents',
   'I will take responsibility for my own progress',
   'I will complete all tasks set by my coach or mentor',
+  'I will be honest about my performances and my areas for growth',
 ]
+
+const DOMINANT_FEET = ['Right', 'Left', 'Both']
+const AGE_GROUPS = ['U5–U6 (Early Years)', 'U7–U9 (Pre-Academy)', 'U10–U12 (Foundation)', 'U13–U16 (Youth)', '16+ (Pro Pathway)']
 
 interface Props {
   userId: string
@@ -28,6 +32,8 @@ export default function PlayerProfileForm({ userId, profile }: Props) {
   const [fullName, setFullName] = useState(profile.full_name)
   const [position, setPosition] = useState(profile.position)
   const [academyYear, setAcademyYear] = useState(profile.academy_year)
+  const [dominantFoot, setDominantFoot] = useState('')
+  const [ageGroup, setAgeGroup] = useState('')
   const [aboutMe, setAboutMe] = useState(profile.about_me)
   const [myPurpose, setMyPurpose] = useState(profile.my_purpose)
   const [saved, setSaved] = useState(false)
@@ -78,6 +84,20 @@ export default function PlayerProfileForm({ userId, profile }: Props) {
           <div>
             <label className={labelCls}>Academy Year</label>
             <input type="text" value={academyYear} onChange={e => setAcademyYear(e.target.value)} placeholder="e.g. Year 2" className={inputCls} />
+          </div>
+          <div>
+            <label className={labelCls}>Dominant Foot</label>
+            <select value={dominantFoot} onChange={e => setDominantFoot(e.target.value)} className={inputCls + ' cursor-pointer'}>
+              <option value="">Select...</option>
+              {DOMINANT_FEET.map(f => <option key={f} value={f}>{f}</option>)}
+            </select>
+          </div>
+          <div>
+            <label className={labelCls}>Age Group</label>
+            <select value={ageGroup} onChange={e => setAgeGroup(e.target.value)} className={inputCls + ' cursor-pointer'}>
+              <option value="">Select...</option>
+              {AGE_GROUPS.map(g => <option key={g} value={g}>{g}</option>)}
+            </select>
           </div>
         </div>
       </div>

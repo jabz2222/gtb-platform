@@ -1,5 +1,9 @@
 import { Metadata } from 'next'
 import Link from 'next/link'
+import FadeUp from '@/components/ui/motion/FadeUp'
+import StaggerContainer from '@/components/ui/motion/StaggerContainer'
+import ScrollReveal3D from '@/components/ui/motion/ScrollReveal3D'
+import TiltCard from '@/components/ui/motion/TiltCard'
 
 export const metadata: Metadata = { title: 'Pricing — GTB Development' }
 
@@ -125,31 +129,35 @@ export default function PricingPage() {
   return (
     <div className="max-w-5xl mx-auto px-6">
       {/* Header */}
-      <div className="text-center pt-16 pb-14">
-        <p className="text-[#C9A84C] text-[11px] tracking-[0.3em] uppercase mb-3">Pricing</p>
-        <h1
-          className="text-5xl font-black tracking-tight text-white uppercase mb-4"
-          style={{ fontFamily: "'Arial Black', sans-serif" }}
-        >
-          Choose Your <span style={{ color: '#C9A84C' }}>Tier</span>
-        </h1>
-        <p className="text-[#555] text-sm max-w-md mx-auto">
-          All tiers are personalised and assigned by GTB staff based on your programme.
-          Contact us to find out which is right for you.
-        </p>
-      </div>
+      <FadeUp>
+        <div className="text-center pt-16 pb-14">
+          <p className="text-[#C9A84C] text-[11px] tracking-[0.3em] uppercase mb-3">Pricing</p>
+          <h1
+            className="text-5xl font-black tracking-tight text-white uppercase mb-4"
+            style={{ fontFamily: "'Arial Black', sans-serif" }}
+          >
+            Choose Your <span style={{ color: '#C9A84C' }}>Tier</span>
+          </h1>
+          <p className="text-[#555] text-sm max-w-md mx-auto">
+            All tiers are personalised and assigned by GTB staff based on your programme.
+            Contact us to find out which is right for you.
+          </p>
+        </div>
+      </FadeUp>
 
       {/* Tier cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-16">
-        {TIERS.map(tier => (
-          <div
-            key={tier.name}
-            className={`relative bg-[#0D0D0D] rounded-sm overflow-hidden flex flex-col
-                        ${tier.highlight
-                          ? 'border border-[#C9A84C]/40 shadow-[0_0_30px_rgba(201,168,76,0.08)]'
-                          : 'border border-white/5'
-                        }`}
-          >
+      <StaggerContainer>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-16">
+          {TIERS.map(tier => (
+            <FadeUp key={tier.name}>
+              <TiltCard maxTilt={6} shine>
+                <div
+                  className={`relative bg-[#0D0D0D] rounded-sm overflow-hidden flex flex-col
+                              ${tier.highlight
+                                ? 'border border-[#C9A84C]/40 shadow-[0_0_30px_rgba(201,168,76,0.08)]'
+                                : 'border border-white/5'
+                              }`}
+                >
             {tier.highlight && (
               <div className="bg-[#C9A84C] text-black text-[10px] font-black tracking-[0.2em]
                               uppercase text-center py-1.5">
@@ -211,13 +219,17 @@ export default function PricingPage() {
                 {tier.cta}
               </Link>
             </div>
-          </div>
-        ))}
-      </div>
+                </div>
+              </TiltCard>
+            </FadeUp>
+          ))}
+        </div>
+      </StaggerContainer>
 
       {/* Comparison table */}
-      <div className="mb-20">
-        <p className="text-[#C9A84C] text-[11px] tracking-[0.3em] uppercase mb-6 text-center">Full Feature Comparison</p>
+      <ScrollReveal3D rotateXFrom={8} yFrom={40}>
+        <div className="mb-20">
+          <p className="text-[#C9A84C] text-[11px] tracking-[0.3em] uppercase mb-6 text-center">Full Feature Comparison</p>
         <div className="bg-[#0D0D0D] border border-white/5 rounded-sm overflow-hidden">
           {/* Header */}
           <div className="grid grid-cols-5 px-5 py-3 border-b border-white/5">
@@ -246,24 +258,27 @@ export default function PricingPage() {
             </div>
           ))}
         </div>
-      </div>
+        </div>
+      </ScrollReveal3D>
 
       {/* FAQ-style note */}
-      <div className="bg-[#0D0D0D] border border-white/5 rounded-sm p-6 mb-20">
-        <p className="text-[11px] text-[#C9A84C] uppercase tracking-[0.3em] mb-4">How Tiers Work</p>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {[
-            { q: 'How is my tier assigned?', a: 'Tiers are personalised and assigned by GTB staff based on your programme enrolment, age, and development goals.' },
-            { q: 'Can I upgrade?', a: 'Yes — contact your assigned staff member or GTB admin to discuss upgrading your tier and unlocking additional content.' },
-            { q: 'What about cancellations?', a: '24+ hours notice = full credit refund. Under 24 hours = 50% kept. No-show = full deposit retained.' },
-          ].map(item => (
-            <div key={item.q}>
-              <p className="text-xs font-bold text-white mb-1">{item.q}</p>
-              <p className="text-xs text-[#444] leading-relaxed">{item.a}</p>
-            </div>
-          ))}
+      <FadeUp>
+        <div className="bg-[#0D0D0D] border border-white/5 rounded-sm p-6 mb-20">
+          <p className="text-[11px] text-[#C9A84C] uppercase tracking-[0.3em] mb-4">How Tiers Work</p>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {[
+              { q: 'How is my tier assigned?', a: 'Tiers are personalised and assigned by GTB staff based on your programme enrolment, age, and development goals.' },
+              { q: 'Can I upgrade?', a: 'Yes — contact your assigned staff member or GTB admin to discuss upgrading your tier and unlocking additional content.' },
+              { q: 'What about cancellations?', a: '24+ hours notice = full credit refund. Under 24 hours = 50% kept. No-show = full deposit retained.' },
+            ].map(item => (
+              <div key={item.q}>
+                <p className="text-xs font-bold text-white mb-1">{item.q}</p>
+                <p className="text-xs text-[#444] leading-relaxed">{item.a}</p>
+              </div>
+            ))}
+          </div>
         </div>
-      </div>
+      </FadeUp>
     </div>
   )
 }

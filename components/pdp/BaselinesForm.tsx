@@ -4,16 +4,18 @@ import { useState, useTransition } from 'react'
 import { createClient } from '@/lib/supabase/client'
 import { useRouter } from 'next/navigation'
 
-type Category = 'physical' | 'psychological' | 'technical'
+type Category = 'physical' | 'psychological' | 'technical' | 'tactical'
 
 const PHYSICAL_METRICS = ['Height (cm)', 'Weight (kg)', 'Sprint 10m (s)', 'Sprint 20m (s)', 'Sprint 40m (s)', 'Agility T-Test (s)', 'VO2 Max (ml/kg/min)']
-const PSYCH_METRICS = ['Confidence', 'Resilience', 'Focus', 'Leadership', 'Coachability']
-const TECH_METRICS = ['Passing', 'Receiving', '1v1 Defending', '1v1 Attacking', 'Positioning', 'Decision-Making', 'Set Pieces']
+const PSYCH_METRICS = ['Confidence', 'Resilience', 'Focus', 'Coachability', 'Pressure Management', 'Decision Courage']
+const TECH_METRICS = ['First Touch', 'Passing Accuracy', 'Receiving Under Pressure', '1v1 Attacking', '1v1 Defending', 'Shooting Technique', 'Crossing & Delivery', 'Set Piece Delivery']
+const TACTICAL_METRICS = ['Off-Ball Movement', 'Scanning & Awareness', 'Pressing & Recovery', 'Transition Recognition', 'Defensive Shape', 'Attacking Runs', 'Game Intelligence']
 
 const STATUS_COLOURS: Record<string, string> = {
   physical: '#CC2222',
   psychological: '#9B2454',
   technical: '#5BB8E8',
+  tactical: '#C9A84C',
 }
 
 interface Baseline { category: string; metric_name: string; value: number | null }
@@ -37,6 +39,7 @@ export default function BaselinesForm({ userId, existing }: { userId: string; ex
     physical: PHYSICAL_METRICS,
     psychological: PSYCH_METRICS,
     technical: TECH_METRICS,
+    tactical: TACTICAL_METRICS,
   }
 
   function handleSave() {
@@ -73,7 +76,7 @@ export default function BaselinesForm({ userId, existing }: { userId: string; ex
     <div className="space-y-6">
       {/* Tabs */}
       <div className="flex gap-1 border-b border-white/5 pb-0">
-        {(['physical', 'psychological', 'technical'] as Category[]).map(t => (
+        {(['physical', 'psychological', 'technical', 'tactical'] as Category[]).map(t => (
           <button
             key={t}
             onClick={() => setTab(t)}
@@ -96,7 +99,34 @@ export default function BaselinesForm({ userId, existing }: { userId: string; ex
           </span>
         </div>
         <div className="p-5">
-          {tab === 'psychological' ? (
+          {tab === 'tactical' ? (
+            <div>
+              <p className="text-[11px] text-[#444] mb-4">Self-rating 1–10 (coach rating may be added separately)</p>
+              <div className="space-y-4">
+                {TACTICAL_METRICS.map(m => {
+                  const key = `${tab}:${m}`
+                  const val = parseInt(values[key] ?? '5')
+                  return (
+                    <div key={m}>
+                      <div className="flex justify-between mb-2">
+                        <span className="text-sm text-[#888]">{m}</span>
+                        <span className="text-sm font-medium" style={{ color: colour }}>{val}/10</span>
+                      </div>
+                      <input
+                        type="range"
+                        min={1}
+                        max={10}
+                        value={val}
+                        onChange={e => setValues(v => ({ ...v, [key]: e.target.value }))}
+                        className="w-full h-2 rounded-full bg-[#1A1A1A] cursor-pointer"
+                        style={{ accentColor: colour }}
+                      />
+                    </div>
+                  )
+                })}
+              </div>
+            </div>
+          ) : tab === 'psychological' ? (
             <div className="space-y-5">
               <p className="text-[11px] text-[#444] mb-2">Rate each quality 1–10</p>
               {PSYCH_METRICS.map(m => {

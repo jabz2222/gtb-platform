@@ -8,6 +8,8 @@ import StaggerContainer from '@/components/ui/motion/StaggerContainer'
 import AnimatedHeading from '@/components/ui/motion/AnimatedHeading'
 import SlideIn from '@/components/ui/motion/SlideIn'
 import CTAButton from '@/components/ui/motion/CTAButton'
+import ScrollReveal3D from '@/components/ui/motion/ScrollReveal3D'
+import TiltCard from '@/components/ui/motion/TiltCard'
 
 type DivisionSlug = 'football' | 'fitness' | 'sports' | 'mentoring' | 'education'
 
@@ -37,9 +39,9 @@ const DIVISION_CONTENT: Record<DivisionSlug, DivisionContent> = {
     description:
       'GTB Football develops football performance, decision-making, and competitive intelligence through guided discovery, constraints-led training, and reflective questioning. It builds technical fundamentals, tactical understanding, position-specific detail, psychological resilience, and match realism across all age phases — creating intelligent players who understand why decisions are made, not just how to execute techniques.',
     color: '#5BB8E8',
-    stat: 'U5–U15+',
+    stat: 'U5–16+',
     statLabel: 'All Age Groups',
-    ageRange: 'Under 5s to Under 15s and beyond',
+    ageRange: 'Under 5s to Pro Pathway (16+)',
     fourDFocus: ['Decision', 'Delivery'],
     crossDivision: 'Football sessions integrate with GTB Fitness for strength and conditioning, GTB Mentoring for mindset development, and GTB Education for sports science understanding. Participants on multi-discipline programmes move seamlessly between divisions.',
     features: [
@@ -70,29 +72,34 @@ const DIVISION_CONTENT: Record<DivisionSlug, DivisionContent> = {
     ],
     programmes: [
       {
-        name: 'Mini Kickers',
-        description: 'Introduction to football through games and fun movement challenges. Drive through enjoyment, Decision through guided play.',
-        ages: 'U5 – U7',
+        name: 'Early Years',
+        description: '"I Enjoy Moving and Playing." Parent-led fun and movement. Celebration of participation, big spaces, zero pressure. Football through play — always wanting the ball.',
+        ages: 'U5 – U6',
       },
       {
-        name: 'Development Academy',
-        description: 'Core technical and tactical development. Weekly training with monthly reviews against 4D benchmarks.',
-        ages: 'U8 – U11',
+        name: 'Pre-Academy',
+        description: '"I Love Having the Ball." Semi-opposed sessions introducing basic technique and touch. Fun skill challenges, 1v1 fundamentals, and parent-supported reflection.',
+        ages: 'U7 – U9',
       },
       {
-        name: 'Performance Programme',
-        description: 'High-intensity coaching with position-specific training, match analysis, and integrated mentoring support.',
-        ages: 'U12 – U15+',
+        name: 'Foundation Phase',
+        description: '"I Am Building My Game." Technical foundations deepen. Tactical language introduced. Players begin structured self-reflection across the 4D model with coach support.',
+        ages: 'U10 – U12',
       },
       {
-        name: '1-to-1 & Small Group Development Centre',
+        name: 'Youth Development',
+        description: '"I Own My Development." Decision-making at the core. Video analysis begins. Tactical depth, pressing systems, PDP tracking, and player-led review integrated every session.',
+        ages: 'U13 – U16',
+      },
+      {
+        name: 'Pro Pathway',
+        description: '"I Drive My Performance." Full game intelligence. Position-specific detail, opposition analysis, advanced PDP tracking, and full ownership of individual development.',
+        ages: '16+',
+      },
+      {
+        name: '1-to-1 & Small Group',
         description: 'Individual and small group sessions (2–4 players) focused on specific technical, tactical, or positional development. Tailored to the player\'s PDP and delivered by specialist GTB coaches.',
         ages: 'All ages',
-      },
-      {
-        name: 'Analysis Service',
-        description: 'Coming soon — video and data analysis of match footage and training sessions. Players receive a detailed breakdown of their decision-making, movement patterns, and technical execution against 4D benchmarks.',
-        ages: 'U10+',
       },
     ],
     keyBenefits: [
@@ -325,63 +332,68 @@ const DIVISION_CONTENT: Record<DivisionSlug, DivisionContent> = {
     logo: '/logos/gtb-education.png',
     tagline: 'Learn Today. Lead Tomorrow.',
     description:
-      'GTB Education bridges the gap between sport and academic success. From GCSE support to applied sports science and life skills programmes, our tiered education content equips young people with the knowledge they need to make intelligent decisions — in sport, education, and life.',
+      'GTB Education is the football-specific learning system running across all GTB programmes. Built around a 12-month curriculum and the 4D Model, it covers three integrated divisions: GTB Education Football (technical and tactical topic knowledge), GTB Fitness S&C (strength and conditioning for footballers), and GTB Mentoring (psychological and holistic development). Every week has a topic, a learning flow, and an education pack — so every player is always developing their understanding, not just their technique.',
     color: '#CC2222',
-    stat: 'Ages 5–16',
-    statLabel: 'Academic & Life Skills',
-    ageRange: 'Ages 5 through 16',
+    stat: 'Ages 5–16+',
+    statLabel: 'Football Education',
+    ageRange: 'All age phases (U5–16+)',
     fourDFocus: ['Decision', 'Drive'],
-    crossDivision: 'Educational content bridges academic achievement with sport-specific performance knowledge. Sports science modules support GTB Football and Fitness participants, while life skills programmes reinforce the mentoring architecture across the ecosystem.',
+    crossDivision: 'GTB Education runs through every football session and is directly connected to the PDP. Weekly topics are adapted to each age phase and linked to training reflections, knowledge checks, and coach observation — so learning is embedded in practice, not separate from it.',
     features: [
       {
-        title: 'Tiered Content Library',
-        body: 'Bronze, Silver, and Gold content tiers unlock progressively advanced material — from foundational literacy to elite performance theory.',
+        title: 'The 4D Weekly Structure',
+        body: 'Every month follows four weekly dimensions: W1 Delivery (Technical), W2 Durability (S&C), W3 Drive (Mentoring), W4 Decision (Tactical). The structure is consistent — only the specific topic changes.',
       },
       {
-        title: 'GCSE Support',
-        body: 'Structured academic support resources aligned to the national curriculum for key stage 3 and 4 students.',
+        title: '12-Month Curriculum',
+        body: 'A full football education curriculum across 12 monthly themes — from Foundation of Control and 1v1 Mastery to Game Intelligence and Transition Play. Each month has age-phase adaptations for all groups.',
       },
       {
-        title: 'Sports Science Modules',
-        body: 'Applied sports science content covering nutrition, biomechanics, psychology, and physiology — building physical and decision intelligence.',
+        title: 'GTB Education Football',
+        body: 'Weekly football topic focus: technical skills, tactical principles, and holistic football knowledge aligned to the 4D Model and LTPD principles.',
       },
       {
-        title: 'Life Skills Programme',
-        body: 'Financial literacy, communication, leadership, and career preparation modules for older age groups.',
+        title: 'GTB Fitness S&C',
+        body: 'Strength and conditioning content planned to complement the weekly football topic. Physical development that directly supports what\'s being coached on the pitch.',
       },
       {
-        title: 'Live Sessions',
-        body: 'Scheduled live educational sessions hosted by GTB educators and external experts. Access varies by tier.',
+        title: 'GTB Mentoring',
+        body: 'The psychological and holistic angle for each week. Connects the football topic to mindset, confidence, resilience, communication, and player ownership.',
       },
       {
-        title: 'Progress Tracking',
-        body: 'Module completion tracked on your PDP. Certificates of completion issued for each completed unit.',
+        title: 'Weekly Education Packs',
+        body: 'Every topic produces four outputs: Visual Resource (infographic/slides), Video Lesson, Knowledge Check (scenario-based), and Written Guide — all adapted by age phase.',
       },
     ],
     programmes: [
       {
-        name: 'Learning Foundations',
-        description: 'Early literacy, numeracy, and social development through sport-themed education.',
-        ages: '5 – 8',
+        name: 'Pre-Academy Education',
+        description: 'Show → Explain → Try → Play. Fun first. Concepts through play. Bold visuals, minimal text, verbal knowledge checks. "Always want the ball!"',
+        ages: 'U5 – U9',
       },
       {
-        name: 'Academic Accelerator',
-        description: 'Curriculum-aligned academic support alongside sports science and life skills content.',
-        ages: '9 – 13',
+        name: 'Foundation Education',
+        description: 'Explain → Demonstrate → Apply. Building football vocabulary and understanding. Semi-opposed drills. Simple language. Start removing fear of making mistakes.',
+        ages: 'U10 – U12',
       },
       {
-        name: 'Elite Scholars',
-        description: 'GCSE support, advanced sports science, leadership, and future pathways planning.',
-        ages: '14 – 16',
+        name: 'Youth Education',
+        description: 'Observe → Think → Solve → Execute. Tactical depth introduced. Video analysis begins. Written scenario tasks. Player self-reports and peer assessment active.',
+        ages: 'U13 – U16',
+      },
+      {
+        name: 'Pro Education',
+        description: 'Analyse → Adapt → Own → Lead. Full game intelligence. Player-led debrief. Independent application. Coaching and leading peers. Concept mapping and performance data tracking.',
+        ages: '16+',
       },
     ],
     keyBenefits: [
-      'Tiered content unlocked by programme tier',
-      'GCSE-aligned academic resources',
-      'Applied sports science modules building Decision intelligence',
-      'Live sessions with GTB educators',
-      'Completion certificates issued',
-      'Integrated with your player development goals',
+      'Structured 12-month football education curriculum',
+      'Weekly topics aligned to the 4D Model (Drive · Decision · Delivery · Durability)',
+      'Three integrated education divisions in every week',
+      'Age-phase adaptations for all groups (U5–16+)',
+      'Weekly education packs: visual, video, knowledge check, written guide',
+      'Progress linked directly to your Player Development Plan',
     ],
   },
 }
@@ -489,6 +501,7 @@ export default async function DivisionPage({ params }: { params: Promise<{ slug:
                     { label: '4D Focus', value: division.fourDFocus.join(' + '), small: true },
                   ].map(item => (
                     <FadeUp key={item.label}>
+                      <TiltCard maxTilt={4} shine className="h-full">
                       <div className="bg-[#0D0D0D] border border-white/5 rounded-sm p-5 relative overflow-hidden h-full">
                         <div className="absolute top-0 left-0 right-0 h-[2px]" style={{ backgroundColor: division.color }} />
                         {item.small ? (
@@ -503,6 +516,7 @@ export default async function DivisionPage({ params }: { params: Promise<{ slug:
                           </>
                         )}
                       </div>
+                      </TiltCard>
                     </FadeUp>
                   ))}
                 </StaggerContainer>
@@ -530,21 +544,23 @@ export default async function DivisionPage({ params }: { params: Promise<{ slug:
             </h2>
           </FadeUp>
           <StaggerContainer className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {division.features.map(f => (
-              <FadeUp key={f.title}>
-                <div
-                  className="relative bg-[#0D0D0D] border border-white/5 rounded-sm p-5 overflow-hidden h-full"
-                >
-                  <div className="absolute top-0 left-0 right-0 h-[2px]" style={{ backgroundColor: division.color }} />
-                  <h3
-                    className="text-xs font-black tracking-wide uppercase mb-2"
-                    style={{ color: division.color, fontFamily: "'Arial Black', sans-serif" }}
+            {division.features.map((f, i) => (
+              <ScrollReveal3D key={f.title} rotateXFrom={10} yFrom={40} offset={['start 92%', 'center 58%']}>
+                <TiltCard maxTilt={6} shine className="h-full">
+                  <div
+                    className="relative bg-[#0D0D0D] border border-white/5 rounded-sm p-5 overflow-hidden h-full"
                   >
-                    {f.title}
-                  </h3>
-                  <p className="text-xs text-[#555] leading-relaxed">{f.body}</p>
-                </div>
-              </FadeUp>
+                    <div className="absolute top-0 left-0 right-0 h-[2px]" style={{ backgroundColor: division.color }} />
+                    <h3
+                      className="text-xs font-black tracking-wide uppercase mb-2"
+                      style={{ color: division.color, fontFamily: "'Arial Black', sans-serif" }}
+                    >
+                      {f.title}
+                    </h3>
+                    <p className="text-xs text-[#555] leading-relaxed">{f.body}</p>
+                  </div>
+                </TiltCard>
+              </ScrollReveal3D>
             ))}
           </StaggerContainer>
         </div>
@@ -570,26 +586,28 @@ export default async function DivisionPage({ params }: { params: Promise<{ slug:
           <StaggerContainer className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {division.programmes.map((prog, i) => (
               <FadeUp key={prog.name}>
-                <div className="bg-[#0D0D0D] border border-white/5 rounded-sm overflow-hidden h-full">
-                  <div className="px-5 py-4 border-b border-white/5 flex items-center justify-between">
-                    <span
-                      className="text-[11px] tracking-[0.3em] uppercase font-black"
-                      style={{ color: division.color, fontFamily: "'Arial Black', sans-serif" }}
-                    >
-                      Programme {i + 1}
-                    </span>
-                    <span
-                      className="text-[10px] px-2 py-0.5 rounded-sm"
-                      style={{ backgroundColor: `${division.color}20`, color: division.color }}
-                    >
-                      {prog.ages}
-                    </span>
+                <TiltCard maxTilt={5} shine className="h-full">
+                  <div className="bg-[#0D0D0D] border border-white/5 rounded-sm overflow-hidden h-full">
+                    <div className="px-5 py-4 border-b border-white/5 flex items-center justify-between">
+                      <span
+                        className="text-[11px] tracking-[0.3em] uppercase font-black"
+                        style={{ color: division.color, fontFamily: "'Arial Black', sans-serif" }}
+                      >
+                        Programme {i + 1}
+                      </span>
+                      <span
+                        className="text-[10px] px-2 py-0.5 rounded-sm"
+                        style={{ backgroundColor: `${division.color}20`, color: division.color }}
+                      >
+                        {prog.ages}
+                      </span>
+                    </div>
+                    <div className="p-5">
+                      <h3 className="text-sm font-bold text-white mb-2">{prog.name}</h3>
+                      <p className="text-xs text-[#555] leading-relaxed">{prog.description}</p>
+                    </div>
                   </div>
-                  <div className="p-5">
-                    <h3 className="text-sm font-bold text-white mb-2">{prog.name}</h3>
-                    <p className="text-xs text-[#555] leading-relaxed">{prog.description}</p>
-                  </div>
-                </div>
+                </TiltCard>
               </FadeUp>
             ))}
           </StaggerContainer>
@@ -705,6 +723,7 @@ export default async function DivisionPage({ params }: { params: Promise<{ slug:
           <StaggerContainer className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             {otherDivisions.map(d => (
               <FadeUp key={d.slug}>
+                <TiltCard maxTilt={5} shine className="h-full">
                 <Link
                   href={`/divisions/${d.slug}`}
                   className="group relative bg-[#0D0D0D] border border-white/5 hover:border-white/10 rounded-sm p-5 overflow-hidden transition-colors block h-full"
@@ -731,6 +750,7 @@ export default async function DivisionPage({ params }: { params: Promise<{ slug:
                   <p className="text-xs text-[#555] italic mb-2">&ldquo;{d.tagline}&rdquo;</p>
                   <p className="text-[10px] text-[#444] tracking-wider uppercase">{d.stat} · {d.statLabel}</p>
                 </Link>
+                </TiltCard>
               </FadeUp>
             ))}
           </StaggerContainer>

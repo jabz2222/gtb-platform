@@ -5,11 +5,14 @@ import { createClient } from '@/lib/supabase/client'
 import { useRouter } from 'next/navigation'
 
 const HABITS = [
-  { key: 'on_time',        label: 'Arrived on time & prepared',         points: 10 },
-  { key: 'mental_ready',   label: 'Prepared mentally before session',    points: 10 },
-  { key: 'full_effort',    label: 'Gave 100% effort throughout',         points: 15 },
-  { key: 'reflected',      label: 'Reflected on session afterwards',     points: 15 },
-  { key: 'homework',       label: 'Completed coach / mentor homework',   points: 20 },
+  { key: 'on_time',        label: 'Arrived on time & fully prepared',        points: 10 },
+  { key: 'mental_ready',   label: 'Prepared mentally before the session',     points: 10 },
+  { key: 'full_effort',    label: 'Gave 100% effort — no switching off',      points: 15 },
+  { key: 'reflected',      label: 'Reflected on the session honestly',        points: 15 },
+  { key: 'homework',       label: 'Completed coach / mentor tasks',           points: 20 },
+  { key: 'sleep',          label: 'Got 8+ hours sleep the night before',      points: 10 },
+  { key: 'nutrition',      label: 'Fuelled properly (pre & post session)',    points: 10 },
+  { key: 'recovery',       label: 'Completed recovery routine (stretch/ice)', points: 10 },
 ]
 
 interface HabitEntry { habit: string; completed: boolean }

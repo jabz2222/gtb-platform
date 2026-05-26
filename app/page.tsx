@@ -8,6 +8,8 @@ import StaggerContainer from '@/components/ui/motion/StaggerContainer'
 import AnimatedHeading from '@/components/ui/motion/AnimatedHeading'
 import ColourBarReveal from '@/components/ui/motion/ColourBarReveal'
 import CTAButton from '@/components/ui/motion/CTAButton'
+import ScrollReveal3D from '@/components/ui/motion/ScrollReveal3D'
+import TiltCard from '@/components/ui/motion/TiltCard'
 
 export default function HomePage() {
   return (
@@ -96,22 +98,92 @@ export default function HomePage() {
 
       {/* Stats bar */}
       <section className="border-t border-white/5 py-14 px-6">
-        <StaggerContainer className="max-w-5xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-8">
-          {[
-            { count: 5,   suffix: '',   label: 'Divisions' },
-            { count: 500, suffix: '+',  label: 'Participants' },
-            { count: 10,  suffix: '+',  label: 'Years Experience' },
-            { count: 1,   suffix: '',   label: 'Ecosystem' },
-          ].map(s => (
-            <FadeUp key={s.label} className="text-center">
-              <p className="text-3xl font-black text-[#C9A84C] mb-1 tabular-nums"
-                 style={{ fontFamily: "'Arial Black', sans-serif" }}>
-                <CountUp value={s.count} suffix={s.suffix} />
-              </p>
-              <p className="text-[11px] text-[#444] tracking-[0.2em] uppercase">{s.label}</p>
-            </FadeUp>
-          ))}
-        </StaggerContainer>
+        <ScrollReveal3D rotateXFrom={8} yFrom={30} offset={['start 95%', 'start 40%']}>
+          <StaggerContainer className="max-w-5xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-8">
+            {[
+              { count: 5,   suffix: '',   label: 'Divisions' },
+              { count: 500, suffix: '+',  label: 'Participants' },
+              { count: 10,  suffix: '+',  label: 'Years Experience' },
+              { count: 1,   suffix: '',   label: 'Ecosystem' },
+            ].map(s => (
+              <FadeUp key={s.label} className="text-center">
+                <p className="text-3xl font-black text-[#C9A84C] mb-1 tabular-nums"
+                   style={{ fontFamily: "'Arial Black', sans-serif" }}>
+                  <CountUp value={s.count} suffix={s.suffix} />
+                </p>
+                <p className="text-[11px] text-[#444] tracking-[0.2em] uppercase">{s.label}</p>
+              </FadeUp>
+            ))}
+          </StaggerContainer>
+        </ScrollReveal3D>
+      </section>
+
+      {/* Age phases */}
+      <section className="border-t border-white/5 px-6 py-20">
+        <div className="max-w-5xl mx-auto">
+          <FadeUp className="text-center mb-10">
+            <p className="text-[#C9A84C] text-[11px] tracking-[0.35em] uppercase mb-3">Five Development Phases</p>
+            <h2 className="text-3xl font-black tracking-wider text-white uppercase mb-3"
+                style={{ fontFamily: "'Arial Black', sans-serif" }}>
+              Every <span style={{ color: '#C9A84C' }}>Age.</span> Every <span style={{ color: '#C9A84C' }}>Stage.</span>
+            </h2>
+            <p className="text-[#555] text-sm max-w-xl mx-auto">
+              GTB Football develops players from first kick to pro pathway. Each phase has its own identity, language, and approach — adapted to what that player needs most.
+            </p>
+          </FadeUp>
+          <StaggerContainer className="grid grid-cols-1 sm:grid-cols-5 gap-3">
+            {[
+              { phase: 'Early Years', ages: 'U5–U6', identity: 'I Enjoy Moving & Playing.', accent: '#5BB8E8' },
+              { phase: 'Pre-Academy', ages: 'U7–U9', identity: 'I Love Having the Ball.', accent: '#9B2454' },
+              { phase: 'Foundation', ages: 'U10–U12', identity: 'I Am Building My Game.', accent: '#C9A84C' },
+              { phase: 'Youth', ages: 'U13–U16', identity: 'I Own My Development.', accent: '#2E8B35' },
+              { phase: 'Pro Pathway', ages: '16+', identity: 'I Drive My Performance.', accent: '#CC2222' },
+            ].map(p => (
+              <FadeUp key={p.phase}>
+                <TiltCard maxTilt={6} shine>
+                  <div className="bg-[#0D0D0D] border border-white/5 rounded-sm p-4 relative overflow-hidden text-center h-full">
+                    <div className="absolute top-0 left-0 right-0 h-[2px]" style={{ backgroundColor: p.accent }} />
+                    <p className="text-[10px] font-black uppercase tracking-wider mb-1" style={{ color: p.accent, fontFamily: "'Arial Black', sans-serif" }}>{p.phase}</p>
+                    <p className="text-xs text-white font-medium mb-2">{p.ages}</p>
+                    <p className="text-[10px] text-[#444] italic leading-relaxed">&ldquo;{p.identity}&rdquo;</p>
+                  </div>
+                </TiltCard>
+              </FadeUp>
+            ))}
+          </StaggerContainer>
+        </div>
+      </section>
+
+      {/* GTB Learning Flow */}
+      <section className="border-t border-white/5 px-6 py-20">
+        <div className="max-w-5xl mx-auto">
+          <FadeUp className="text-center mb-10">
+            <p className="text-[#C9A84C] text-[11px] tracking-[0.35em] uppercase mb-3">GTB Learning Flow</p>
+            <h2 className="text-3xl font-black tracking-wider text-white uppercase"
+                style={{ fontFamily: "'Arial Black', sans-serif" }}>
+              How We <span style={{ color: '#C9A84C' }}>Develop</span>
+            </h2>
+          </FadeUp>
+          <StaggerContainer className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            {[
+              { step: '01', name: 'Reflect', description: 'Video, discussion, prior experience. What do you already know?', colour: '#C9A84C' },
+              { step: '02', name: 'Explore', description: 'Guided learning. Coach introduces the concept through demonstration.', colour: '#5BB8E8' },
+              { step: '03', name: 'Action', description: 'Training sessions, small-sided games. Try the concept for real.', colour: '#2E8B35' },
+              { step: '04', name: 'Sustain', description: 'Journaling, PDP tracking, repetition habits. Make it stick.', colour: '#CC2222' },
+            ].map((s, i) => (
+              <ScrollReveal3D key={s.step} rotateXFrom={10 + i * 2} yFrom={40 + i * 10} offset={['start 90%', 'center 60%']}>
+                <TiltCard maxTilt={5} shine className="h-full">
+                  <div className="bg-[#0D0D0D] border border-white/5 rounded-sm p-5 relative overflow-hidden h-full">
+                    <div className="absolute top-0 left-0 right-0 h-[2px]" style={{ backgroundColor: s.colour }} />
+                    <p className="text-[10px] text-[#333] tracking-wider mb-1">{s.step}</p>
+                    <h3 className="text-sm font-black uppercase tracking-wide mb-2" style={{ color: s.colour, fontFamily: "'Arial Black', sans-serif" }}>{s.name}</h3>
+                    <p className="text-[11px] text-[#555] leading-relaxed">{s.description}</p>
+                  </div>
+                </TiltCard>
+              </ScrollReveal3D>
+            ))}
+          </StaggerContainer>
+        </div>
       </section>
 
       {/* CTA Banner */}

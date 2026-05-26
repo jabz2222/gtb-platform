@@ -7,7 +7,7 @@ const AGE_PHASE_META: Record<string, { label: string; identity: string; accent: 
   early_years: { label: 'Early Years (U5–U6)',      identity: 'I Enjoy Moving and Playing.',  accent: '#5BB8E8' },
   pre_academy: { label: 'Pre-Academy (U7–U9)',       identity: 'I Love Having the Ball.',     accent: '#9B2454' },
   foundation:  { label: 'Foundation Phase (U10–U12)',identity: 'I Am Building My Game.',      accent: '#C9A84C' },
-  youth:       { label: 'Youth Development (U13–U15)',identity: 'I Own My Development.',      accent: '#2E8B35' },
+  youth:       { label: 'Youth Development (U13–U16)',identity: 'I Own My Development.',      accent: '#2E8B35' },
   pro:         { label: 'Pro Pathway (U16+)',         identity: 'I Drive My Performance.',    accent: '#CC2222' },
 }
 

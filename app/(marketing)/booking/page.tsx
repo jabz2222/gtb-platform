@@ -1,6 +1,10 @@
 import { Metadata } from 'next'
 import Link from 'next/link'
 import BookingEnquiryForm from '@/components/booking/BookingEnquiryForm'
+import FadeUp from '@/components/ui/motion/FadeUp'
+import StaggerContainer from '@/components/ui/motion/StaggerContainer'
+import ScrollReveal3D from '@/components/ui/motion/ScrollReveal3D'
+import TiltCard from '@/components/ui/motion/TiltCard'
 
 export const metadata: Metadata = { title: 'Booking | GTB Development' }
 
@@ -78,6 +82,7 @@ export default function BookingPage() {
 
       {/* Hero */}
       <section className="pt-16 pb-20 px-6 text-center">
+        <FadeUp>
         <p className="text-[#C9A84C] text-[11px] tracking-[0.35em] uppercase mb-4">
           Start Your Journey
         </p>
@@ -108,14 +113,16 @@ export default function BookingPage() {
             Sign In
           </Link>
         </div>
+        </FadeUp>
       </section>
 
       {/* Booking type cards */}
       <section className="px-6 pb-24 max-w-6xl mx-auto">
+        <StaggerContainer>
         <div className="grid md:grid-cols-3 gap-4">
           {BOOKING_TYPES.map(type => (
+            <FadeUp key={type.id}><TiltCard maxTilt={7} shine>
             <div
-              key={type.id}
               className="card-hover-glow relative bg-[#0D0D0D] border border-white/5 rounded-sm p-7 flex flex-col transition-colors duration-300"
             >
               {/* Tag */}
@@ -171,8 +178,10 @@ export default function BookingPage() {
                 </Link>
               </div>
             </div>
+            </TiltCard></FadeUp>
           ))}
         </div>
+        </StaggerContainer>
       </section>
 
       {/* How it works */}
@@ -189,7 +198,8 @@ export default function BookingPage() {
 
         <div className="grid sm:grid-cols-2 md:grid-cols-4 gap-6">
           {HOW_IT_WORKS.map((item, i) => (
-            <div key={item.step} className="relative">
+            <ScrollReveal3D key={item.step} rotateXFrom={12} yFrom={50} offset={['start 90%', 'center 60%']}>
+            <div className="relative">
               {/* Connector line */}
               {i < HOW_IT_WORKS.length - 1 && (
                 <div className="hidden md:block absolute top-[22px] left-[calc(100%-0px)] w-full h-px bg-white/5 z-0" />
@@ -208,6 +218,7 @@ export default function BookingPage() {
                 <p className="text-[#555] text-xs leading-relaxed">{item.description}</p>
               </div>
             </div>
+            </ScrollReveal3D>
           ))}
         </div>
       </section>
@@ -231,6 +242,7 @@ export default function BookingPage() {
 
       {/* Parent note */}
       <section className="border-t border-white/5 px-6 py-16 max-w-6xl mx-auto">
+        <FadeUp>
         <div className="bg-[#0D0D0D] border border-white/5 rounded-sm p-8 flex flex-col md:flex-row items-start gap-6">
           <div className="flex-shrink-0 w-10 h-10 rounded-full bg-[#C9A84C]/10 flex items-center justify-center">
             <span className="text-[#C9A84C] text-lg">👨‍👧</span>
@@ -253,10 +265,12 @@ export default function BookingPage() {
             </Link>
           </div>
         </div>
+        </FadeUp>
       </section>
 
       {/* Bottom CTA */}
       <section className="border-t border-white/5 px-6 py-24 text-center">
+        <FadeUp>
         <p className="text-[#C9A84C] text-[11px] tracking-[0.35em] uppercase mb-4">Ready?</p>
         <h2
           className="text-4xl md:text-5xl font-black tracking-wider uppercase text-white mb-6"
@@ -275,6 +289,7 @@ export default function BookingPage() {
         >
           Create Your Account
         </Link>
+        </FadeUp>
       </section>
     </div>
   )

@@ -6,9 +6,9 @@ import { useRouter } from 'next/navigation'
 
 type ReflectionType = 'training' | 'match' | 'technical'
 
-const TRAINING_AREAS = ['Understanding', 'Learning', 'Challenges', 'Self-Awareness', 'Effort', 'Improvement']
-const MATCH_AREAS = ['Decision-Making', 'Technical Quality', 'Tactical Awareness', 'Effort & Attitude', 'Communication', 'Areas for Growth']
-const TECHNICAL_SKILLS = ['Passing', 'Receiving', 'Dribbling', '1v1 Defending', 'Positioning', 'Shooting', 'Heading', 'Set Pieces']
+const TRAINING_AREAS = ['Technical Execution', 'Tactical Understanding', 'Physical Effort', 'Psychological Focus', 'Coachability', 'Session Contribution']
+const MATCH_AREAS = ['Decision-Making', 'Technical Quality', 'Tactical Awareness', 'Effort & Attitude', 'Communication & Leadership', 'Defensive Contribution', 'Attacking Contribution', 'Areas for Growth']
+const TECHNICAL_SKILLS = ['First Touch', 'Passing Accuracy', 'Receiving Under Pressure', 'Dribbling & 1v1', '1v1 Defending', 'Shooting Technique', 'Crossing & Delivery', 'Heading', 'Set Piece Delivery', 'Off-Ball Movement']
 
 interface Reflection {
   id: string

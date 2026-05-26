@@ -6,6 +6,8 @@ import StaggerContainer from '@/components/ui/motion/StaggerContainer'
 import AnimatedHeading from '@/components/ui/motion/AnimatedHeading'
 import SlideIn from '@/components/ui/motion/SlideIn'
 import CTAButton from '@/components/ui/motion/CTAButton'
+import ScrollReveal3D from '@/components/ui/motion/ScrollReveal3D'
+import TiltCard from '@/components/ui/motion/TiltCard'
 
 export const metadata: Metadata = { title: 'About GTB Development' }
 
@@ -18,18 +20,18 @@ const STATS = [
 ]
 
 const INTELLIGENCES = [
-  { name: 'Participant', description: 'Understanding personal strengths, limitations, and behavioural patterns.' },
-  { name: 'Decision', description: 'Processing information quickly and acting adaptively under pressure.' },
-  { name: 'Physical', description: 'Movement mechanics, progressive overload, recovery, and nutrition principles.' },
-  { name: 'Emotional', description: 'Self-regulation, composure under stress, and empathy within team environments.' },
-  { name: 'Leadership', description: 'Communication, influence, accountability, and elevating group standards.' },
+  { name: 'Physical', description: 'Movement mechanics, athleticism, progressive overload, recovery, and long-term physical development.' },
+  { name: 'Technical', description: 'Skill acquisition, ball mastery, execution precision, and body mechanics under pressure.' },
+  { name: 'Tactical', description: 'Game understanding, decision-making under pressure, reading situations, and positional intelligence.' },
+  { name: 'Emotional', description: 'Self-regulation, composure under stress, resilience after setbacks, and empathy within team environments.' },
+  { name: 'Leadership', description: 'Communication, influence, accountability, peer elevation, and taking ownership of group standards.' },
 ]
 
 const MENTORING_PHASES = [
-  { phase: '01', name: 'Reflect', description: 'Establish awareness of 4D baseline, habits, motivation, and barriers.' },
-  { phase: '02', name: 'Explore', description: 'Build psychological literacy, reframe limiting beliefs, develop growth mindset.' },
-  { phase: '03', name: 'Action', description: 'Set structured PDP targets per 4D dimension with clear data indicators.' },
-  { phase: '04', name: 'Sustain', description: 'Transition responsibility from mentor-led to participant-led ownership.' },
+  { phase: '01', name: 'Reflect', description: 'Establish awareness of 4D baseline, habits, motivation, and barriers. Prior experience and self-knowledge as the starting point.' },
+  { phase: '02', name: 'Explore', description: 'Build psychological literacy, reframe limiting beliefs, develop growth mindset. Coach-guided introduction to concepts.' },
+  { phase: '03', name: 'Action', description: 'Set structured PDP targets per 4D dimension with clear data indicators. Apply concepts in real training and match environments.' },
+  { phase: '04', name: 'Sustain', description: 'Transition responsibility from mentor-led to participant-led ownership. Journaling, PDP tracking, and repetition habits that make development stick.' },
 ]
 
 export default function AboutPage() {
@@ -64,6 +66,7 @@ export default function AboutPage() {
 
       {/* Stats */}
       <section className="border-y border-white/5 py-10">
+        <ScrollReveal3D rotateXFrom={6} yFrom={25} offset={['start 95%', 'start 40%']}>
         <StaggerContainer className="max-w-5xl mx-auto px-6 grid grid-cols-2 md:grid-cols-4 gap-8">
           {STATS.map(s => (
             <FadeUp key={s.label} className="text-center">
@@ -77,6 +80,7 @@ export default function AboutPage() {
             </FadeUp>
           ))}
         </StaggerContainer>
+        </ScrollReveal3D>
       </section>
 
       {/* Mission */}
@@ -151,26 +155,28 @@ export default function AboutPage() {
         <StaggerContainer className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {FOUR_D_MODEL.map(d => (
             <FadeUp key={d.key}>
-              <div className="relative bg-[#0D0D0D] border border-white/5 rounded-sm p-6 overflow-hidden h-full">
-                <div className="absolute top-0 left-0 right-0 h-[2px]" style={{ backgroundColor: d.color }} />
-                <div
-                  className="w-10 h-10 rounded-sm flex items-center justify-center mb-4 text-sm font-black"
-                  style={{
-                    backgroundColor: `${d.color}15`,
-                    color: d.color,
-                    fontFamily: "'Arial Black', sans-serif",
-                  }}
-                >
-                  {d.name.charAt(0)}
+              <TiltCard maxTilt={7} shine>
+                <div className="relative bg-[#0D0D0D] border border-white/5 rounded-sm p-6 overflow-hidden h-full">
+                  <div className="absolute top-0 left-0 right-0 h-[2px]" style={{ backgroundColor: d.color }} />
+                  <div
+                    className="w-10 h-10 rounded-sm flex items-center justify-center mb-4 text-sm font-black"
+                    style={{
+                      backgroundColor: `${d.color}15`,
+                      color: d.color,
+                      fontFamily: "'Arial Black', sans-serif",
+                    }}
+                  >
+                    {d.name.charAt(0)}
+                  </div>
+                  <h3
+                    className="text-sm font-black tracking-wide uppercase mb-2"
+                    style={{ color: d.color, fontFamily: "'Arial Black', sans-serif" }}
+                  >
+                    {d.name}
+                  </h3>
+                  <p className="text-xs text-[#555] leading-relaxed">{d.description}</p>
                 </div>
-                <h3
-                  className="text-sm font-black tracking-wide uppercase mb-2"
-                  style={{ color: d.color, fontFamily: "'Arial Black', sans-serif" }}
-                >
-                  {d.name}
-                </h3>
-                <p className="text-xs text-[#555] leading-relaxed">{d.description}</p>
-              </div>
+              </TiltCard>
             </FadeUp>
           ))}
         </StaggerContainer>
@@ -208,21 +214,23 @@ export default function AboutPage() {
             </FadeUp>
             <StaggerContainer className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
               {INTELLIGENCES.map((intel, i) => (
-                <FadeUp key={intel.name}>
-                  <div className="bg-[#0D0D0D] border border-white/5 rounded-sm p-5 relative overflow-hidden h-full">
-                    <div className="absolute top-0 left-0 right-0 h-[2px] bg-[#C9A84C]" />
-                    <p className="text-[10px] text-[#444] tracking-wider uppercase mb-2">
-                      {String(i + 1).padStart(2, '0')}
-                    </p>
-                    <h3
-                      className="text-xs font-black tracking-wide uppercase text-white mb-2"
-                      style={{ fontFamily: "'Arial Black', sans-serif" }}
-                    >
-                      {intel.name}
-                    </h3>
-                    <p className="text-[11px] text-[#555] leading-relaxed">{intel.description}</p>
-                  </div>
-                </FadeUp>
+                <ScrollReveal3D key={intel.name} rotateXFrom={12} yFrom={50} offset={['start 90%', 'center 55%']}>
+                  <TiltCard maxTilt={6} shine>
+                    <div className="bg-[#0D0D0D] border border-white/5 rounded-sm p-5 relative overflow-hidden h-full">
+                      <div className="absolute top-0 left-0 right-0 h-[2px] bg-[#C9A84C]" />
+                      <p className="text-[10px] text-[#444] tracking-wider uppercase mb-2">
+                        {String(i + 1).padStart(2, '0')}
+                      </p>
+                      <h3
+                        className="text-xs font-black tracking-wide uppercase text-white mb-2"
+                        style={{ fontFamily: "'Arial Black', sans-serif" }}
+                      >
+                        {intel.name}
+                      </h3>
+                      <p className="text-[11px] text-[#555] leading-relaxed">{intel.description}</p>
+                    </div>
+                  </TiltCard>
+                </ScrollReveal3D>
               ))}
             </StaggerContainer>
           </div>
@@ -308,16 +316,18 @@ export default function AboutPage() {
           <StaggerContainer className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {GTB_VALUES.map(v => (
               <FadeUp key={v.title}>
-                <div className="relative bg-[#0D0D0D] border border-white/5 rounded-sm p-6 overflow-hidden h-full">
-                  <div className="absolute top-0 left-0 right-0 h-[2px]" style={{ backgroundColor: v.color }} />
-                  <h3
-                    className="text-sm font-black tracking-wide uppercase mb-2"
-                    style={{ color: v.color, fontFamily: "'Arial Black', sans-serif" }}
-                  >
-                    {v.title}
-                  </h3>
-                  <p className="text-xs text-[#555] leading-relaxed">{v.body}</p>
-                </div>
+                <TiltCard maxTilt={5} shine className="h-full">
+                  <div className="relative bg-[#0D0D0D] border border-white/5 rounded-sm p-6 overflow-hidden h-full">
+                    <div className="absolute top-0 left-0 right-0 h-[2px]" style={{ backgroundColor: v.color }} />
+                    <h3
+                      className="text-sm font-black tracking-wide uppercase mb-2"
+                      style={{ color: v.color, fontFamily: "'Arial Black', sans-serif" }}
+                    >
+                      {v.title}
+                    </h3>
+                    <p className="text-xs text-[#555] leading-relaxed">{v.body}</p>
+                  </div>
+                </TiltCard>
               </FadeUp>
             ))}
           </StaggerContainer>
